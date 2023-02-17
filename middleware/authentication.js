@@ -1,5 +1,5 @@
 const { UnauthenticatedError, UnauthorizedError } = require('../errors');
-const { isValid } = require('../utils');
+const { isTokenValid } = require('../utils');
 
 const authenticateUser = async (req, res, next) => {
   const token = req.signedCookies.token;
@@ -9,7 +9,7 @@ const authenticateUser = async (req, res, next) => {
   }
 
   try {
-    const { name, userId, role } = isValid({ token });
+    const { name, userId, role } = isTokenValid({ token });
     req.user = { name, userId, role };
     next();
   } catch (error) {

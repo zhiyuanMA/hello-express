@@ -1,11 +1,11 @@
-const { createJWT, isValid, addToCookies } = require('./jwt');
-const createUser = require('./create-user');
+const { createJWT, isTokenValid, addToCookies } = require('./jwt');
+const createUserDto = require('./create-user-dto');
 const checkPermissions = require('./check-permissions');
 
 module.exports = {
   createJWT,
-  isValid,
+  isTokenValid,
   addToCookies,
-  createUser,
+  createUserDto,
   checkPermissions,
 }

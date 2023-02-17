@@ -1,5 +1,5 @@
-const createUser = (user) => {
+const createUserDto = (user) => {
   return { name: user.name, userId: user._id, role: user.role }
 }
 
-module.exports = createUser;
+module.exports = createUserDto;

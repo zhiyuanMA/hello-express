@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const { BadRequestError } = require('../errors');
 
 const roles = (data = {}, errMsg = {}, content = 'body') => {
   data.token = Joi.allow();
@@ -8,7 +9,7 @@ const roles = (data = {}, errMsg = {}, content = 'body') => {
       await schema.validateAsync(req[content], data);
       next();
     } catch (error) {
-      res.status(400).json({ message: error.message ? error.message : errMsg[error.details[0].context.key] });
+      throw new BadRequestError(error.message ? error.message : errMsg[error.details[0].context.key]);
     }
   };
 };

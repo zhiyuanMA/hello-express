@@ -8,7 +8,7 @@ const createJWT = ({ payload }) => {
   return token;
 };
 
-const isValid = ({ token }) => jwt.verify(token, process.env.JWT_SECRET);
+const isTokenValid = ({ token }) => jwt.verify(token, process.env.JWT_SECRET);
 
 const addToCookies = ({ res, user }) => {
   const token = createJWT({ payload: user });
@@ -25,6 +25,6 @@ const addToCookies = ({ res, user }) => {
 
 module.exports = {
   createJWT,
-  isValid,
+  isTokenValid,
   addToCookies,
 }
