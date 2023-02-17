@@ -15,38 +15,43 @@ const mongoSanitize = require('express-mongo-sanitize');
 const connectDB = require('./db/connect');
 
 //routers
+const authRouter = require('./routes/auth');
 //
 
 const notFound = require('./middleware/not-found');
+const errorHandler = require('./middleware/error-handler');
 
 app.use(rateLimiter({
   windowMs: 30 * 60 * 1000,
   max: 600
 }));
 
+app.use(morgan('tiny'));
 app.use(helmet());
 app.use(cors());
 app.use(xss());
 app.use(mongoSanitize());
 
 app.use(express.json());
-app.use(cookieParser(process.env.JWT_SECRET)); //todo
+app.use(cookieParser(process.env.JWT_SECRET));
 app.use(express.static('./public'));
 
 //use routers
+app.use('/api/v1/auth', authRouter);
 //
 
 app.use(notFound);
+app.use(errorHandler);
 
 const port = process.env.PORT || 5000;
 const start = async () => {
   try {
-    await connectDB(process.env_MONGO_URI);
+    await connectDB(process.env.MONGO_URI);
     app.listen(port, () => {
       console.log(`Server is running on prot ${port}`);
     });
   } catch (error) {
-
+    console.log(error);
   }
 };
 
