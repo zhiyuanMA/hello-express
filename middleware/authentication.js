@@ -2,14 +2,14 @@ const { UnauthenticatedError, UnauthorizedError } = require('../errors');
 const { isTokenValid } = require('../utils');
 
 const authenticateUser = async (req, res, next) => {
-  const token = req.signedCookies.token;
+  const token = req.signedCookies.token; //cookies parse will add this value into request
 
   if (!token) {
     throw new UnauthenticatedError('Authentication Invalid');
   }
 
   try {
-    const { name, userId, role } = isTokenValid({ token });
+    const { name, userId, role } = isTokenValid(token);
     req.user = { name, userId, role };
     next();
   } catch (error) {
@@ -22,6 +22,7 @@ const authorizePermissions = (...roles) => {
     if (!roles.includes(req.user.role)) {
       throw new UnauthorizedError('Unauthorized to access this route');
     }
+    next();
   };
 };
 

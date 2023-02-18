@@ -13,7 +13,7 @@ const getAllUsers = async (req, res) => {
 };
 
 const getUser = async (req, res) => {
-  const user = await User.findOne({ _id: req.params.id }).select('-password');
+  const user = await User.findById(req.params.id).select('-password');
   if (!user) {
     throw new CustomError.NotFoundError(`No user with id: ${req.params.id}`);
   }
@@ -27,17 +27,18 @@ const getCurrentUser = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
+  // todo check email exist
   const { email, name } = req.body;
-  const user = await User.findOneAndUpdate({ _id: req.user.userId }, { email, name }, { new: true, runValidators: true });
+  const user = await User.findByIdAndUpdate(req.user.userId, { email, name }, { new: true, runValidators: true });
   const userDto = createUserDto(user);
   addToCookies({ res, user: userDto });
   res.status(StatusCodes.OK).json({ user: userDto });
 };
 
 const updatePassword = async (req, res) => {
-  const id = req.params.id;
+  const id = req.user.userId;
   const { oldPassword, newPassword } = req.body;
-  const user = await User.findOne({ _id: id });
+  const user = await User.findById(id);
 
   if (!user) {
     throw new CustomError.NotFoundError(`No user with id: ${id}`);

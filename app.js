@@ -22,7 +22,7 @@ const notFound = require('./middleware/not-found');
 const errorHandler = require('./middleware/error-handler');
 
 app.use(rateLimiter({
-  windowMs: 30 * 60 * 1000,
+  windowMs: 30 * 60 * 1000, // better to mv those config to .env file
   max: 600
 }));
 
@@ -33,12 +33,12 @@ app.use(xss());
 app.use(mongoSanitize());
 
 app.use(express.json());
-app.use(cookieParser(process.env.JWT_SECRET));
+app.use(cookieParser(process.env.JWT_SECRET)); // sign cookies with same secret with jwt
 app.use(express.static('./public'));
 
 //use routers
 app.use('/api/v1/auth', authRouter);
-app.use('/api/v1/user', userRouter);
+app.use('/api/v1/users', userRouter);
 
 app.use(notFound);
 app.use(errorHandler);

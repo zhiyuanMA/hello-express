@@ -9,3 +9,10 @@ A simple and basic start project for express with mongodb, features included:
 #### Morgan 
 #### Rate limit
 #### Mongoose
+
+Create `.env` file and add those variables:
+
+###### JWT_SECRET
+###### JWT_EXPIRED
+###### NODE_ENV
+###### MONGO_URI
