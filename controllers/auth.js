@@ -18,11 +18,32 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
+  const { email, password } = req.body;
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    throw new CustomError.UnauthenticatedError('Invalid Credentials');
+  }
+
+  const isPasswordCorrect = await user.comparePassword(password);
+  if (!isPasswordCorrect) {
+    throw new CustomError.UnauthenticatedError('Invalid Credentials');
+  }
+
+  const userDto = createUserDto(user);
+  addToCookies({ res, user: userDto });
+
+  res.status(StatusCodes.OK).json({ user: userDto });
 
 };
 
 const logout = async (req, res) => {
-  res.cookie();
+  res.cookie('token', 'logout', {
+    httpOnly: true,
+    expires: new Date(Date.now() + 1000),
+  });
+
+  res.status(StatusCodes.OK).json({ mesage: 'user logged out' });
 };
 
 module.exports = {

@@ -16,7 +16,7 @@ const connectDB = require('./db/connect');
 
 //routers
 const authRouter = require('./routes/auth');
-//
+const userRouter = require('./routes/user');
 
 const notFound = require('./middleware/not-found');
 const errorHandler = require('./middleware/error-handler');
@@ -38,7 +38,7 @@ app.use(express.static('./public'));
 
 //use routers
 app.use('/api/v1/auth', authRouter);
-//
+app.use('/api/v1/user', userRouter);
 
 app.use(notFound);
 app.use(errorHandler);
