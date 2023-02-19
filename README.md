@@ -16,3 +16,5 @@ Create `.env` file and add those variables:
 ###### JWT_EXPIRED
 ###### NODE_ENV
 ###### MONGO_URI
+
+Need to add an `admin` account manually.

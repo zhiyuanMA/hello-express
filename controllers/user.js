@@ -27,8 +27,11 @@ const getCurrentUser = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  // todo check email exist
   const { email, name } = req.body;
+  const u = await User.findOne({ email });
+  if (u && u._id.toString() !== req.user.userId) {
+    throw new CustomError.BadRequestError('Email exists');
+  }
   const user = await User.findByIdAndUpdate(req.user.userId, { email, name }, { new: true, runValidators: true });
   const userDto = createUserDto(user);
   addToCookies({ res, user: userDto });
